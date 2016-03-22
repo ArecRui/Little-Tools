@@ -18,7 +18,7 @@ def access_pages(id_lst, url_prefix, access_token):
     #print('make page param')
     for page_id in id_lst:
         tmp_page_info = {'page_title':'','percnt_text':0,'percnt_video':0,'percnt_photo':0,'percnt_link':0,'percnt_other':0,'phone':'','emails':'','likes':'','online':0}
-        tmp_post_info = {'averlikes':0,'avercomts':0,'avershares':0,'percorig':0,'percrepost':0,'responseto':0}
+        tmp_post_info = {'averlikes':0,'avercomts':0,'avershares':0,'percorig':0,'percrepost':0,'responseto':0,'postscount':0}
         tmp_type_counts = {"link": 0, "status": 0, "photo": 0, "video":0, "offer": 0}
         tmp_postattri_info = {'tmp_sharescount_list':[],'tmp_likecount_list':[],'tmp_comentcount_list':[],'tmptype':'','repostcount':0}
         tmp_posts_counts = 0
@@ -72,6 +72,7 @@ def access_pages(id_lst, url_prefix, access_token):
         tmp_post_info['percorig'] = len(tmp_postattri_info['tmp_sharescount_list'])/tmp_posts_counts
         #tmp_post_info['percrepost'] = 1 - 
         tmp_post_info['responseto']
+        tmp_post_info['postscount'] = tmp_posts_counts
         write_page_stats(tmp_page_info,tmp_post_info)
         
 def access_posts(post_id, url_prefix, access_token,tmp_postattri_info):
@@ -92,11 +93,11 @@ def access_posts(post_id, url_prefix, access_token,tmp_postattri_info):
         tmp_postattri_info['tmp_sharescount_list'][0] = int(tmp_shares_count)
         #print('tmp sharescount list', tmp_postattri_info['tmp_sharescount_list'][0])
     tmp_likes_count = likecount(post_id, url_prefix, access_token)
-    print('calculating likes counts')
+    #print('calculating likes counts')
     tmp_postattri_info['tmp_likecount_list'] = [0]
     tmp_postattri_info['tmp_likecount_list'] = tmp_likes_count
     comentscout_json = r_json.get('comments')
-    print('calculating comments counts')
+    #print('calculating comments counts')
     tmp_comments_counet = likecount(post_id, url_prefix, access_token)
     tmp_postattri_info['tmp_comentcount_list'] = [0]
     tmp_postattri_info['tmp_comentcount_list'] = tmp_comments_counet
