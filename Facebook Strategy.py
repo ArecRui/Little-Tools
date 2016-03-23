@@ -179,4 +179,5 @@ if __name__ == '__main__':
     access_pages(id_lst, 'https://graph.facebook.com/v2.5/', access_token)
     f_write = open('page_stas_output.txt', 'a')
     end_time = datetime.datetime.now()
+    
     f_write.write('\n' + 'Finish Time: ' + str(end_time))
