@@ -1,0 +1,2 @@
+return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 16-19: character maps to <undefined>
