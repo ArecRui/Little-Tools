@@ -79,23 +79,34 @@ def access_pages(id_lst, url_prefix, access_token):
             #print('get data of next page of posts', nextpage)
             page_json = nextpage.json()
             #print('jsonlize next page', page_json)
+            
         if tmp_posts_counts == 0:
             tmp_posts_counts = -1
+        else:
+            print (tmp_posts_counts)
+            
         if len(tmp_postattri_info['tmp_sharescount_list']) == 0:
-            tmp_postattri_info['tmp_sharescount_list'][0] = '1'
+            tmp_post_info['avershares'] = 0
+        else:
+            print("tmp_postattri_info['tmp_sharescount_list']",tmp_postattri_info['tmp_sharescount_list'])
+            tmp_post_info['avershares'] = sum(tmp_postattri_info['tmp_sharescount_list'])/len(tmp_postattri_info['tmp_sharescount_list'])
+            
         if len(tmp_postattri_info['tmp_likecount_list']) == 0:
-            tmp_postattri_info['tmp_likecount_list'][0] = 1
-        if tmp_postattri_info['tmp_comentcount_list'] == None:
-            tmp_postattri_info['tmp_comentcount_list'][0] = 1            
+            tmp_post_info['averlikes'] = 0
+        else:
+            print("tmp_postattri_info['tmp_likecount_list']", tmp_postattri_info['tmp_likecount_list'])
+            tmp_post_info['averlikes'] = sum(tmp_postattri_info['tmp_likecount_list'])/len(tmp_postattri_info['tmp_likecount_list'])
+        
+        if len(tmp_postattri_info['tmp_comentcount_list']) == 0:
+            tmp_post_info['avercomts'] = 0
+        else:
+            print("tmp_postattri_info['tmp_comentcount_list']", tmp_postattri_info['tmp_comentcount_list'])
+            tmp_post_info['avercomts'] = sum(tmp_postattri_info['tmp_comentcount_list'])/len(tmp_postattri_info['tmp_comentcount_list'])           
+            
         tmp_page_info['percnt_text'] = tmp_type_counts['status']/tmp_posts_counts
         tmp_page_info['percnt_video'] = tmp_type_counts['video']/tmp_posts_counts
         tmp_page_info['percnt_photo'] = tmp_type_counts['photo']/tmp_posts_counts
         tmp_page_info['percnt_link'] = tmp_type_counts['link']/tmp_posts_counts
-        print("tmp_postattri_info['tmp_sharescount_list']",tmp_postattri_info['tmp_sharescount_list'])
-        tmp_post_info['avershares'] = sum(tmp_postattri_info['tmp_sharescount_list'])/len(tmp_postattri_info['tmp_sharescount_list'])
-        print("tmp_postattri_info['tmp_likecount_list']", tmp_postattri_info['tmp_likecount_list'])
-        tmp_post_info['averlikes'] = sum(tmp_postattri_info['tmp_likecount_list'])/len(tmp_postattri_info['tmp_likecount_list'])
-        tmp_post_info['avercomts'] = sum(tmp_postattri_info['tmp_comentcount_list'])/len(tmp_postattri_info['tmp_comentcount_list'])
         tmp_post_info['percorig'] = tmp_postattri_info['repostcount']/tmp_posts_counts
         tmp_post_info['postscount'] = tmp_posts_counts
         write_page_stats(tmp_page_info,tmp_post_info)
