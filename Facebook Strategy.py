@@ -14,8 +14,11 @@ def write_page_stats(page_info,post_info):
     f_write.write(str(page_info) + str(post_info)+ '\n')
 
 def access_pages(id_lst, url_prefix, access_token):
-    param_page = {"access_token": access_token, "fields": "name,id,phone,emails,likes,events,posts{type}"}
+    param_page = {"access_token": access_token, "fields": "name,id,phone,emails,likes,events,posts{type,created_time}"}
     #print('make page param')
+    time_range = ['0','0']
+    time_range[0] = raw_input("Please enter start date(yyyymmdd). For example 20140101:")
+    time_range[1] = raw_input("Please enter end date(yyyymmdd). For example 20150101:")
     for page_id in id_lst:
         tmp_page_info = {'page_title':'','percnt_text':0,'percnt_video':0,'percnt_photo':0,'percnt_link':0,'percnt_other':0,'phone':'','emails':'','likes':'','online':0}
         tmp_post_info = {'averlikes':0,'avercomts':0,'avershares':0,'percorig':0,'percrepost':0,'responseto':0,'postscount':0}
@@ -23,6 +26,9 @@ def access_pages(id_lst, url_prefix, access_token):
         tmp_postattri_info = {'tmp_sharescount_list':[],'tmp_likecount_list':[],'tmp_comentcount_list':[],'tmptype':'','repostcount':0}
         tmp_posts_counts = 0
         r = requests.get(url_prefix+page_id, params=param_page)
+        if r.headers.get('Facebook-API-Version') == None:
+            access_token[0] = raw_input("Access token expired. Please enter a new access token: ")
+            r = requests.get(url_prefix+page_id, params=param_page)
         r_json= r.json()
         print('jsonlize web page', page_id)
         page_json = r_json.get('posts')
@@ -42,6 +48,14 @@ def access_pages(id_lst, url_prefix, access_token):
         while (page_json.get('paging')== None) == False:
             posts = page_json.get('data')
             for post in posts:
+                post_date_raw = post.get('created_time')
+                post_datec = post_date_raw[:10]
+                if post_datec >  time_range[1]:
+                    continue
+                elif post_datec < time_range[0]:
+                    break
+                else:
+                    print('Start access posts:')
                 post_id = post.get('id')
                 print('get post id', post_id)
                 tmp_posts_counts = tmp_posts_counts +1
@@ -85,6 +99,9 @@ def access_posts(post_id, url_prefix, access_token,tmp_postattri_info):
     tmp_postattri_info = {'tmp_sharescount_list':[],'tmp_likecount_list':[],'tmp_comentcount_list':[],'tmptype':'','repostcount':0}
     #print('make post params')
     r = requests.get(url_prefix+post_id, params=param_post)
+    if r.headers.get('Facebook-API-Version') == None:
+        access_token[0] = raw_input("Access token expired. Please enter a new access token: ")
+        r = requests.get(url_prefix+post_id, params=param_post)
     #print('get posts')
     r_json = r.json()
     #print('r_json')
@@ -116,6 +133,9 @@ def access_posts(post_id, url_prefix, access_token,tmp_postattri_info):
 def likecount (post_id, url_prefix, access_token):
     like_param = {"access_token": access_token, "fields": "likes{limit=100000000}"}
     r = requests.get(url_prefix+post_id, params=like_param)
+    if r.headers.get('Facebook-API-Version') == None:
+        access_token[0] = raw_input("Access token expired. Please enter a new access token: ")
+        r = requests.get(url_prefix+post_id, params=like_param)
     r_json =  r.json()
     page_json = r_json.get('likes')
     likes = []
@@ -141,6 +161,9 @@ def likecount (post_id, url_prefix, access_token):
 def comtcount (post_id, url_prefix, access_token):
     comt_param = {"access_token": access_token, "fields": "comments{limit=100000000}"}
     r = requests.get(url_prefix+post_id, params=comt_param)
+    if r.headers.get('Facebook-API-Version') == None:
+        access_token[0] = raw_input("Access token expired. Please enter a new access token: ")
+        r = requests.get(url_prefix+post_id, params=comt_param)
     r_json =  r.json()
     page_json = r_json.get('comments')
     comts = []
@@ -164,8 +187,6 @@ def comtcount (post_id, url_prefix, access_token):
     return number
 
 if __name__ == '__main__':
-    access_token = 'CAACEdEose0cBAAgCM7LaZA1akZAokHO2PoEIZCrv8cK3bu1HeNgPCwjvo3JJSQr8WGRSGZCxs9XknhkCYrKImFowGsryqDI53bJ2htZCrxClZCk1si7MmY4x3j3TQxZByZAHnv4gHJw276k5nHcG1RCO87Vlf0mywtM7DJ3oMuh85Vg1vMlSZCHN1ITWaCSKarJLXT5UO24CwkDcQZA6POWrNp'
-    print("get access_token")
     f_read = open('page_ids.txt', 'r')
     print('open id list file')
     id_lst = read_page_ids(f_read)
@@ -175,6 +196,9 @@ if __name__ == '__main__':
     f_write.write('Start Time: ' + str(start_time) + '\n')
     print('read id list')
     print('start access pages')
+    access_token = ['0']
+    access_token[0] = raw_input("Please enter access token for facebook api: ")
+    print("get access_token")
     access_pages(id_lst, 'https://graph.facebook.com/v2.5/', access_token)
     f_write = open('page_stas_output.txt', 'a')
     end_time = datetime.datetime.now()
