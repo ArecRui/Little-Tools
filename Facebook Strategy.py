@@ -164,7 +164,7 @@ def comtcount (post_id, url_prefix, access_token):
     return number
 
 if __name__ == '__main__':
-    access_token = ''
+    access_token = 'CAACEdEose0cBAAgCM7LaZA1akZAokHO2PoEIZCrv8cK3bu1HeNgPCwjvo3JJSQr8WGRSGZCxs9XknhkCYrKImFowGsryqDI53bJ2htZCrxClZCk1si7MmY4x3j3TQxZByZAHnv4gHJw276k5nHcG1RCO87Vlf0mywtM7DJ3oMuh85Vg1vMlSZCHN1ITWaCSKarJLXT5UO24CwkDcQZA6POWrNp'
     print("get access_token")
     f_read = open('page_ids.txt', 'r')
     print('open id list file')
