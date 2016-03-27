@@ -198,6 +198,9 @@ def comtcount (post_id, url_prefix, access_token):
             nextp_params = {"access_token":access_token,"pretty":"0","limit":"10000000","after":after}
             comt = '/comments'
             nextpage = requests.get(url_prefix+post_id+comt, params=nextp_params)
+            if nextpage.headers.get('Facebook-API-Version') == None:
+                access_token[0] = input("Access token expired. Please enter a new access token: ")
+                nextpage = requests.get(url_prefix+post_id+comt, params=nextp_params)
             #print('get data of next page of posts', nextpage)
             page_json = nextpage.json()
             #print('jsonlize next page', page_json)
