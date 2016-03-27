@@ -194,9 +194,10 @@ def comtcount (post_id, url_prefix, access_token):
         if page_json.get('paging').get('next') == None:
             break
         else:
-            nextpageurl = page_json.get('paging').get('next')
-            #print('get url of next page', nextpageurl)
-            nextpage = requests.get(nextpageurl)
+            after = page_json.get('paging').get('cursors').get('after')
+            nextp_params = {"access_token":access_token,"pretty":"0","limit":"10000000","after":after}
+            comt = '/comments'
+            nextpage = requests.get(url_prefix+post_id+comt, params=nextp_params)
             #print('get data of next page of posts', nextpage)
             page_json = nextpage.json()
             #print('jsonlize next page', page_json)
