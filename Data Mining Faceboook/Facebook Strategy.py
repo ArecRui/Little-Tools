@@ -17,8 +17,8 @@ def access_pages(id_lst, url_prefix, access_token):
     param_page = {"access_token": access_token, "fields": "name,id,phone,emails,likes,events,posts{type,created_time}"}
     #print('make page param')
     time_range = ['0','0']
-    time_range[0] = input("Please enter start date(yyyymmdd). For example 20140101:")
-    time_range[1] = input("Please enter end date(yyyymmdd). For example 20150101:")
+    time_range[0] = input("Please enter start date(yyyymmdd). For example 2014-01-01:")
+    time_range[1] = input("Please enter end date(yyyymmdd). For example 2015-01-01:")
     for page_id in id_lst:
         tmp_page_info = {'page_title':'','percnt_text':0,'percnt_video':0,'percnt_photo':0,'percnt_link':0,'percnt_other':0,'phone':'','emails':'','likes':'','online':0}
         tmp_post_info = {'averlikes':0,'avercomts':0,'avershares':0,'percorig':0,'percrepost':0,'responseto':0,'postscount':0}
