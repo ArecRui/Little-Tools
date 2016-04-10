@@ -17,13 +17,8 @@ def access_pages(id_lst, url_prefix, access_token):
     param_page = {"access_token": access_token, "fields": "name,id,phone,emails,likes,events,posts{type,created_time}"}
     #print('make page param')
     time_range = ['0','0']
-<<<<<<< HEAD
-    time_range[0] = '2011-01-01'#input("Please enter start date(yyyymmdd). For example 20140101:")
-    time_range[1] = '2020-01-01'#input("Please enter end date(yyyymmdd). For example 20150101:")
-=======
-    time_range[0] = input("Please enter start date(yyyymmdd). For example 2014-01-01:")
-    time_range[1] = input("Please enter end date(yyyymmdd). For example 2015-01-01:")
->>>>>>> origin/master
+    time_range[0] = '2014-01-01'#input("Please enter start date(yyyymmdd). For example 2014-01-01:")
+    time_range[1] = '2014-12-31'#input("Please enter end date(yyyymmdd). For example 2015-01-01:")
     for page_id in id_lst:
         tmp_page_info = {'page_title':'','percnt_text':0,'percnt_video':0,'percnt_photo':0,'percnt_link':0,'percnt_other':0,'phone':'','emails':'','likes':'','online':0}
         tmp_post_info = {'averlikes':0,'avercomts':0,'avershares':0,'percorig':0,'percrepost':0,'responseto':0,'postscount':0}
@@ -247,14 +242,17 @@ if __name__ == '__main__':
     print('open id list file')
     id_lst = read_page_ids(f_read)
     print(id_lst)
+    start_time = str(datetime.datetime.now())
+    print(start_time)
     f_write = open('page_stats_output.txt', 'w')
-    start_time = datetime.datetime.now()
-    f_write.write('Start Time: ' + str(start_time) + '\n')
+    f_write.write('')
+    write_page_stats('Start Time: ',start_time)
     print('read id list')
     print('start access pages')
     access_token = ['CAACEdEose0cBAF0gNFbmaP4ZCypEXMQ7hXZAGHSIzeVZAc46NzxLwA9OydMVZAW138Ktz6Bx6GoKZBkW1BZADIzKAUZCnjdmeAR4y3ojDZAtusQMZBOjovzFtlO26MjbruPl6BXWYttwnKw4wWSLNYk9sFAiejaoh0KZAPmS6C7NcIxZAYFTklbAVJVf0WfpWzpU91JZAtrMLa1nxFB2oJm7vdah']
     print("get access_token")
+    print('access pages')
     access_pages(id_lst, 'https://graph.facebook.com/v2.5/', access_token)
-    f_write = open('page_stas_output.txt', 'a')
-    end_time = datetime.datetime.now()
-    f_write.write('\n' + 'Finish Time: ' + str(end_time))
+    end_time = str(datetime.datetime.now())
+    print(end_time)
+    write_page_stats('Finish Time: ',end_time)
