@@ -1,5 +1,6 @@
 import requests
 import datetime
+
 def read_page_ids(ids_file):
     id_lst = []
     for line in ids_file.readlines():
@@ -34,6 +35,7 @@ def access_pages(id_lst, url_prefix, access_token):
         page_json = r_json.get('posts')
         #print('duplicate r_json')
         tmp_page_info['page_title'] = str(r_json.get('name'))
+        tmp_page_info['page_title'] = tmp_page_info['page_title'].encode('gbk')
         print('analysing company:', tmp_page_info['page_title'])
         if not r_json.get('phone')==None:
             tmp_page_info['phone'] = 1
@@ -109,6 +111,7 @@ def access_pages(id_lst, url_prefix, access_token):
         tmp_page_info['percnt_link'] = tmp_type_counts['link']/tmp_posts_counts
         tmp_post_info['percorig'] = tmp_postattri_info['repostcount']/tmp_posts_counts
         tmp_post_info['postscount'] = tmp_posts_counts
+        print(tmp_page_info,tmp_post_info)
         write_page_stats(tmp_page_info,tmp_post_info)
         
 def access_posts(post_id, url_prefix, access_token,tmp_postattri_info):
@@ -249,7 +252,7 @@ if __name__ == '__main__':
     write_page_stats('Start Time: ',start_time)
     print('read id list')
     print('start access pages')
-    access_token = ['CAACEdEose0cBAF0gNFbmaP4ZCypEXMQ7hXZAGHSIzeVZAc46NzxLwA9OydMVZAW138Ktz6Bx6GoKZBkW1BZADIzKAUZCnjdmeAR4y3ojDZAtusQMZBOjovzFtlO26MjbruPl6BXWYttwnKw4wWSLNYk9sFAiejaoh0KZAPmS6C7NcIxZAYFTklbAVJVf0WfpWzpU91JZAtrMLa1nxFB2oJm7vdah']
+    access_token = ['CAACEdEose0cBAMeBaWA7nPuxpZCQZCq8GfYHRLke0bP0WD12QFMU5kY4UIY5d9bgGrdhapFAyHt94B0IOTzAT1PGcwAHHuC48OZAmYTD7iCKNTKPjwcFeCYQBAWCjO6OFTNPoWgywxA4uVJZBZBNiJPY37vrGSP8RwjvvplMtVxO2dPnvB4DDw8QCxb1bfmZCYE4QsdGHDZBFwO9iNP8cFH']
     print("get access_token")
     print('access pages')
     access_pages(id_lst, 'https://graph.facebook.com/v2.5/', access_token)
