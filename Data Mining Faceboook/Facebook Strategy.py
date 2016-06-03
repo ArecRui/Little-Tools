@@ -35,7 +35,7 @@ def access_pages(id_lst, url_prefix, access_token):
         page_json = r_json.get('posts')
         #print('duplicate r_json')
         tmp_page_info['page_title'] = str(r_json.get('name'))
-        tmp_page_info['page_title'] = tmp_page_info['page_title'].encode('gbk')
+        tmp_page_info['page_title'] = tmp_page_info['page_title'].encode('utf-8')
         print('analysing company:', tmp_page_info['page_title'])
         if not r_json.get('phone')==None:
             tmp_page_info['phone'] = 1
